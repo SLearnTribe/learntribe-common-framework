@@ -1,4 +1,3 @@
 package com.smilebat.learntribe.clients;
 
-public class OmniBusResponse {
-}
+public class OmniBusResponse {}
