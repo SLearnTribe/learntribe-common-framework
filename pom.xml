@@ -7,16 +7,38 @@
     <parent>
         <groupId>com.smilebat.learntribe</groupId>
         <artifactId>sbcloud-parent-pom</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
+    <groupId>com.smilebat.learntribe</groupId>
     <artifactId>learntribe-common-framework</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>learntribe-common-framework</name>
+    <name>${project.artifactId}</name>
 
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.smilebat.learntribe</groupId>
+                <artifactId>learntribe-model</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.smilebat.learntribe</groupId>
+            <artifactId>learntribe-api</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
     <modules>
         <module>learntribe-client</module>
+        <module>learntribe-validator</module>
     </modules>
 
     <repositories>
