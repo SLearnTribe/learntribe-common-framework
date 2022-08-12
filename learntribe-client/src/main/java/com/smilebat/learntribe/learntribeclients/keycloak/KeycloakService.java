@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author Pai,Sai Nandan
  */
-@FeignClient(name = "KEYCLOAK", url = "http://localhost:8085/admin")
+@FeignClient(name = "KEYCLOAK", url = "${feign.client.url.keycloak}/admin")
 public interface KeycloakService {
 
   /**
