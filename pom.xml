@@ -12,17 +12,20 @@
 
     <groupId>com.smilebat.learntribe</groupId>
     <artifactId>learntribe-common-framework</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.5-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
-
+	<properties>
+        <model.version>1.0.5-SNAPSHOT</model.version>
+    </properties>
+	
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.smilebat.learntribe</groupId>
                 <artifactId>learntribe-model</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>${model.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -33,7 +36,7 @@
         <dependency>
             <groupId>com.smilebat.learntribe</groupId>
             <artifactId>learntribe-api</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${model.version}</version>
         </dependency>
     </dependencies>
     <modules>
