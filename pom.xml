@@ -16,7 +16,7 @@
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     <properties>
-        <model.version>1.0.8-SNAPSHOT</model.version>
+        <model.version>1.0.0-SNAPSHOT</model.version>
     </properties>
 	
     <dependencyManagement>
