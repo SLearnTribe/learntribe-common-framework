@@ -29,20 +29,23 @@ public class FeignClientInterceptor implements RequestInterceptor {
             SecurityContextHolder.getContext().getAuthentication();
     Target<?> target = requestTemplate.feignTarget();
 
-    if (target != null && "LinkedIn".equals(target.name())) {
-      log.info("Fetch linked in token here");
+    if (target != null && "OPENAI".equals(target.name())) {
+      log.info("Appending bearer token for authorization");
+      requestTemplate.header("Content-Type", "application/json");
+      //      requestTemplate.header(
+      //              AUTHORIZATION_HEADER,
+      //              String.format("%s %s", TOKEN_TYPE,
+      // "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"));
     }
 
     if (target != null && "KEYCLOAK_PROVIDER".equals(target.name())) {
       log.info("Accessing realm management");
-      requestTemplate.header("Content-Type", "application/x-www-form-urlencoded");
-    }
-
-    if (authentication != null) {
-      requestTemplate.header(
-          AUTHORIZATION_HEADER,
-          String.format("%s %s", TOKEN_TYPE, authentication.getToken().getTokenValue()));
-      requestTemplate.header("Content-Type", "application/x-www-form-urlencoded");
+      if (authentication != null) {
+        requestTemplate.header(
+            AUTHORIZATION_HEADER,
+            String.format("%s %s", TOKEN_TYPE, authentication.getToken().getTokenValue()));
+        requestTemplate.header("Content-Type", "application/x-www-form-urlencoded");
+      }
     }
   }
 }
