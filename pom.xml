@@ -15,11 +15,10 @@
     <version>1.0.12-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
-
-	<properties>
+    <properties>
         <model.version>1.0.12-SNAPSHOT</model.version>
     </properties>
-	
+    
     <dependencyManagement>
         <dependencies>
             <dependency>
