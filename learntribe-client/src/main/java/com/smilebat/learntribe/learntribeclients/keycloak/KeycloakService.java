@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author Pai,Sai Nandan
  */
-@FeignClient(name = "KEYCLOAK", url = "${feign.client.url.keycloak}/admin")
+@FeignClient(name = "KEYCLOAK", url = "${feign.client.url.keycloak}/admin/realms/master")
 public interface KeycloakService {
 
   /**
@@ -22,7 +23,7 @@ public interface KeycloakService {
    *
    * @return {@link String}
    */
-  @GetMapping(path = "realms/master/users")
+  @GetMapping(path = "users")
   List<UserRepresentation> fetchAllUsers();
 
   /**
@@ -31,7 +32,7 @@ public interface KeycloakService {
    * @param email the input {@link String}
    * @return the Stream of {@link UserRepresentation}
    */
-  @GetMapping(path = "realms/master/users")
+  @GetMapping(path = "users")
   List<UserRepresentation> fetchUserByEmail(@RequestParam(value = "email") String email);
 
   /**
@@ -40,6 +41,14 @@ public interface KeycloakService {
    * @param userId the input {@link String}
    * @return the Stream of {@link UserRepresentation}
    */
-  @GetMapping(path = "realms/master/users/{id}")
+  @GetMapping(path = "users/{id}")
   UserRepresentation fetchUserById(@PathVariable("id") String userId);
+
+  /**
+   * Clears the user session and logs out.
+   *
+   * @param userId the IAM user id.
+   */
+  @PostMapping(path = "users/{id}/logout")
+  void logout(@PathVariable("id") String userId);
 }

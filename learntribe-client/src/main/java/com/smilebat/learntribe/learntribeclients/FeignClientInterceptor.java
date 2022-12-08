@@ -38,7 +38,7 @@ public class FeignClientInterceptor implements RequestInterceptor {
       // "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"));
     }
 
-    if (target != null && "KEYCLOAK_PROVIDER".equals(target.name())) {
+    if (target != null && "KEYCLOAK".equals(target.name())) {
       log.info("Accessing realm management");
       if (authentication != null) {
         requestTemplate.header(
