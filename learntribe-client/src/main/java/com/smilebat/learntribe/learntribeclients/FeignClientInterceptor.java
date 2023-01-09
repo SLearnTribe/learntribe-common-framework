@@ -30,10 +30,10 @@ public class FeignClientInterceptor implements RequestInterceptor {
     if (target != null && "OPENAI".equals(target.name())) {
       log.info("Appending bearer token for authorization");
       requestTemplate.header("Content-Type", "application/json");
-      //      requestTemplate.header(
-      //              AUTHORIZATION_HEADER,
-      //              String.format("%s %s", TOKEN_TYPE,
-      // "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"));
+      requestTemplate.header(
+          AUTHORIZATION_HEADER,
+          String.format(
+              "%s %s", TOKEN_TYPE, "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"));
     }
 
     //    if (target != null && "KEYCLOAK".equals(target.name())) {

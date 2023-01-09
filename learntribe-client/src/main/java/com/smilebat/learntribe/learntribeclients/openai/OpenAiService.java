@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  *
  * @author Pai,Sai Nandan
  */
-@FeignClient(name = "OPENAI", url = "https://api.openai.com/v1/completions")
+@FeignClient(name = "OPENAI", url = "https://api.openai.com/v1")
 public interface OpenAiService {
   /**
    * Returns the matching user based on user id, empty otherwise.
@@ -22,6 +22,6 @@ public interface OpenAiService {
    * @param request the input {@link OpenAiRequest}
    * @return the Stream of {@link UserRepresentation}
    */
-  @GetMapping(path = "realms/master/users/{id}")
+  @GetMapping(path = "completions")
   OpenAiResponse getCompletions(@RequestBody OpenAiRequest request);
 }
