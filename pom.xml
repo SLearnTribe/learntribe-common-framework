@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.smilebat.learntribe</groupId>
         <artifactId>sbcloud-parent-pom</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <groupId>com.smilebat.learntribe</groupId>
@@ -17,6 +17,12 @@
     <name>${project.artifactId}</name>
     <properties>
         <model.version>1.1.6-SNAPSHOT</model.version>
+
+    <version>1.1.3-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <properties>
+        <model.version>1.1.5-SNAPSHOT</model.version>
     </properties>
     
     <dependencyManagement>
@@ -41,16 +47,6 @@
     <modules>
         <module>learntribe-client</module>
         <module>learntribe-validator</module>
+        <module>learntribe-dataaccess</module>
     </modules>
-
-    <repositories>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/smilebat96/Releases</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
 </project>

@@ -3,8 +3,11 @@ package com.smilebat.learntribe.learntribeclients.keycloak;
 import com.smilebat.learntribe.keycloak.response.UserRepresentation;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -14,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author Pai,Sai Nandan
  */
-@FeignClient(name = "KEYCLOAK", url = "${feign.client.url.keycloak}/admin")
+@FeignClient(name = "KEYCLOAK", url = "${feign.client.url.keycloak}/admin/realms/master")
 public interface KeycloakService {
 
   /**
@@ -22,7 +25,7 @@ public interface KeycloakService {
    *
    * @return {@link String}
    */
-  @GetMapping(path = "realms/master/users")
+  @GetMapping(path = "users")
   List<UserRepresentation> fetchAllUsers();
 
   /**
@@ -31,7 +34,7 @@ public interface KeycloakService {
    * @param email the input {@link String}
    * @return the Stream of {@link UserRepresentation}
    */
-  @GetMapping(path = "realms/master/users")
+  @GetMapping(path = "users")
   List<UserRepresentation> fetchUserByEmail(@RequestParam(value = "email") String email);
 
   /**
@@ -40,6 +43,18 @@ public interface KeycloakService {
    * @param userId the input {@link String}
    * @return the Stream of {@link UserRepresentation}
    */
-  @GetMapping(path = "realms/master/users/{id}")
+  @GetMapping(path = "users/{id}")
   UserRepresentation fetchUserById(@PathVariable("id") String userId);
+
+  /**
+   * Logs out all user session.
+   *
+   * @param authorizationHeader the auth bearer token.
+   * @param userId the IAM user id.
+   * @return the {@link ResponseEntity}.
+   */
+  @PostMapping(path = "users/{id}/logout")
+  ResponseEntity<String> logout(
+      @RequestHeader(value = "Authorization", required = true) String authorizationHeader,
+      @PathVariable("id") String userId);
 }
