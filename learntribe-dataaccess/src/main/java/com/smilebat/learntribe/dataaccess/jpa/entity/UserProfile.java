@@ -89,13 +89,13 @@ public class UserProfile {
 
   private Long phone;
 
-  @OneToMany(mappedBy = USER_DETAILS_NAME, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = USER_DETAILS_NAME, cascade = CascadeType.MERGE)
   @JsonIgnoreProperties(
       value = {USER_DETAILS_NAME},
       allowSetters = true)
   private Set<WorkExperience> workExperiences = new TreeSet<>(WorkExperience.Comparators.END_DATE);
 
-  @OneToMany(mappedBy = USER_DETAILS_NAME, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = USER_DETAILS_NAME, cascade = CascadeType.MERGE)
   @JsonIgnoreProperties(
       value = {USER_DETAILS_NAME},
       allowSetters = true)

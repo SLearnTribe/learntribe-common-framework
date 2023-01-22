@@ -32,6 +32,8 @@ public class Challenge {
   @Column(name = "id", nullable = false)
   private Long id;
 
+  private String skill;
+
   private String question;
   private String[] options;
   private String answer;
