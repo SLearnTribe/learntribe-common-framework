@@ -84,6 +84,13 @@ public class Resume {
   private Set<ResumeEducationExperience> educationExperiences =
       new TreeSet<>(ResumeEducationExperience.Comparators.END_DATE);
 
+  @OneToMany(mappedBy = RESUME_DETAIL, cascade = CascadeType.ALL)
+  @JsonIgnoreProperties(
+      value = {RESUME_DETAIL},
+      allowSetters = true)
+  private Set<ResumeSideProject> sideProjects =
+      new TreeSet<>(ResumeSideProject.Comparators.END_DATE);
+
   /**
    * Assigns the work experiences for save.
    *
@@ -105,6 +112,18 @@ public class Resume {
     if (experiences != null) {
       experiences.forEach(experience -> experience.setResume(this));
       educationExperiences = experiences;
+    }
+  }
+
+  /**
+   * Assigns the side projects for save.
+   *
+   * @param experiences the Set of {@link ResumeSideProject}.
+   */
+  public void setSideProjects(Set<ResumeSideProject> experiences) {
+    if (experiences != null) {
+      experiences.forEach(experience -> experience.setResume(this));
+      sideProjects = experiences;
     }
   }
 }

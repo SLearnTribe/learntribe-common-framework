@@ -48,7 +48,7 @@ public class ResumeWorkExperience implements Experience, Comparable<ResumeWorkEx
   @ManyToOne(optional = false)
   @NotNull
   @JsonIgnoreProperties(
-      value = {"educationExperiences", "workExperiences"},
+      value = {"educationExperiences", "workExperiences", "sideProjects"},
       allowSetters = true)
   protected Resume resume;
 

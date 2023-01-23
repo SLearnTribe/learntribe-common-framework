@@ -10,58 +10,59 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Educational Experience representation of DB.
+ * Work Experience representation of DB.
  *
  * <p>Copyright &copy; 2022 Smile .Bat
  *
- * @author Pai,Sai Nandan
+ * @author Sanjay
  */
 @Getter
 @Setter
-@Table(name = "RESUME_EDUCATION_EXPERIENCE")
+@Table(name = "SIDE_PROJECT")
 @Entity
 @SuppressFBWarnings(justification = "Generated code")
-public class ResumeEducationExperience
-    implements Experience, Comparable<ResumeEducationExperience> {
+public class SideProject implements Experience, Comparable<SideProject> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
   private Long id;
 
-  private String location;
-  private String collegeName;
+  private String name;
 
-  private String degree;
+  @Lob private String url;
+  @Lob private String skills;
 
-  private Instant dateOfCompletion;
+  protected Instant startDate;
+  protected Instant endDate;
 
-  private String fieldOfStudy;
+  @Lob private String description;
 
   @ManyToOne(optional = false)
   @NotNull
   @JsonIgnoreProperties(
       value = {"educationExperiences", "workExperiences", "sideProjects"},
       allowSetters = true)
-  protected Resume resume;
+  protected UserProfile userProfile;
 
   @Override
-  public int compareTo(ResumeEducationExperience o) {
-    if (o != null && dateOfCompletion != null) {
-      return o.dateOfCompletion.compareTo(dateOfCompletion);
+  public int compareTo(SideProject o) {
+    if (o != null && endDate != null) {
+      return o.endDate.compareTo(endDate);
     }
     return 0;
   }
 
   /** Wrapper class for comparator sorting based on date. */
   public static class Comparators {
-    public static final Comparator<ResumeEducationExperience> END_DATE =
-        Comparator.comparing(ResumeEducationExperience::getDateOfCompletion);
+    public static final Comparator<SideProject> END_DATE =
+        Comparator.comparing(SideProject::getEndDate);
   }
 }

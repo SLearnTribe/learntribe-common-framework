@@ -45,7 +45,7 @@ public class WorkExperience implements Experience, Comparable<WorkExperience> {
   @ManyToOne(optional = false)
   @NotNull
   @JsonIgnoreProperties(
-      value = {"educationExperiences", "workExperiences"},
+      value = {"educationExperiences", "workExperiences", "sideProjects"},
       allowSetters = true)
   protected UserProfile userProfile;
 

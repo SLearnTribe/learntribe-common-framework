@@ -102,6 +102,12 @@ public class UserProfile {
   private Set<EducationExperience> educationExperiences =
       new TreeSet<>(EducationExperience.Comparators.END_DATE);
 
+  @OneToMany(mappedBy = USER_DETAILS_NAME, cascade = CascadeType.MERGE)
+  @JsonIgnoreProperties(
+      value = {USER_DETAILS_NAME},
+      allowSetters = true)
+  private Set<SideProject> sideProjects = new TreeSet<>(SideProject.Comparators.END_DATE);
+
   /**
    * Assigns the work experiences for save.
    *
@@ -123,6 +129,18 @@ public class UserProfile {
     if (experiences != null) {
       experiences.forEach(experience -> experience.setUserProfile(this));
       educationExperiences = experiences;
+    }
+  }
+
+  /**
+   * Assigns the side projects for save.
+   *
+   * @param experiences the Set of {@link SideProject}.
+   */
+  public void setSideProjects(Set<SideProject> experiences) {
+    if (experiences != null) {
+      experiences.forEach(experience -> experience.setUserProfile(this));
+      sideProjects = experiences;
     }
   }
 }
