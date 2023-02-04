@@ -2,6 +2,7 @@ package com.smilebat.learntribe.dataaccess;
 
 import com.smilebat.learntribe.dataaccess.jpa.entity.Assessment;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -17,13 +18,13 @@ public interface AssessmentRepository extends PagingAndSortingRepository<Assessm
    * @param userId the IAM userId
    * @param title the title
    * @param difficulty the difficulty
-   * @return the List of {@link Assessment}.
+   * @return the Optional of {@link Assessment}.
    */
   @Query(
       value =
           "SELECT * FROM assessment a WHERE a.title like :title and a.created_by = :userId and a.difficulty = :difficulty",
       nativeQuery = true)
-  Assessment findByUserTitleDifficulty(
+  Optional<Assessment> findByUserTitleDifficulty(
       @Param("userId") String userId,
       @Param("title") String title,
       @Param("difficulty") String difficulty);

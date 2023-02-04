@@ -1,16 +1,16 @@
 package com.smilebat.learntribe.dataaccess.jpa.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.smilebat.learntribe.enums.AssessmentDifficulty;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,22 +34,16 @@ public class Challenge {
 
   private String skill;
 
+  @Enumerated(EnumType.STRING)
+  private AssessmentDifficulty difficulty;
+
   private String question;
   private String[] options;
   private String answer;
 
-  //  private ChallengeCategory
-
-  @ManyToOne(optional = false)
-  @NotNull
-  @JsonIgnoreProperties(
-      value = {"challenges"},
-      allowSetters = true)
-  private Assessment assessmentInfo;
-
   @Override
   public int hashCode() {
-    return Objects.hash(question, answer);
+    return Objects.hash(options);
   }
 
   @Override
@@ -58,7 +52,6 @@ public class Challenge {
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
     Challenge other = (Challenge) obj;
-    return Objects.equals(this.question, other.question)
-        && Objects.equals(this.answer, other.answer);
+    return Objects.equals(this.options, other.options);
   }
 }

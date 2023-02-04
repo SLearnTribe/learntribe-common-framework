@@ -22,11 +22,7 @@ public class FeignClientInterceptor implements RequestInterceptor {
 
   @Override
   public void apply(RequestTemplate requestTemplate) {
-    //    AbstractOAuth2TokenAuthenticationToken authentication =
-    //        (AbstractOAuth2TokenAuthenticationToken)
-    //            SecurityContextHolder.getContext().getAuthentication();
     Target<?> target = requestTemplate.feignTarget();
-
     if (target != null && "OPENAI".equals(target.name())) {
       log.info("Appending bearer token for authorization");
       requestTemplate.header("Content-Type", "application/json");
@@ -35,16 +31,5 @@ public class FeignClientInterceptor implements RequestInterceptor {
           String.format(
               "%s %s", TOKEN_TYPE, "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"));
     }
-
-    //    if (target != null && "KEYCLOAK".equals(target.name())) {
-    //      log.info("Accessing realm management");
-    //      if (authentication != null) {
-    //        requestTemplate.header(
-    //            AUTHORIZATION_HEADER,
-    //            String.format("%s %s", TOKEN_TYPE, authentication.getToken().getTokenValue()));
-    //        requestTemplate.header("Content-Type", "application/x-www-form-urlencoded");
-    //      }
-    //    }
-
   }
 }

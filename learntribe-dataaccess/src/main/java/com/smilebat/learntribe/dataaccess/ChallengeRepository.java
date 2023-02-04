@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
   /**
-   * Finds the challenges based on skill.
+   * Finds the paginated challenges based on skill.
    *
    * @param skill the {@link String} skill.
    * @param limit the limit of records.
@@ -24,4 +24,26 @@ public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
       nativeQuery = true)
   Set<Challenge> findBySkill(
       @Param("skill") String skill, @Param("limit") int limit, @Param("offset") int offset);
+
+  /**
+   * Finds the challenges based on skill and difficulty.
+   *
+   * @param skill the {@link String} skill.
+   * @param difficulty the {@link com.smilebat.learntribe.enums.AssessmentDifficulty} value.
+   * @return the Set of {@link Challenge}.
+   */
+  @Query(
+      value =
+          "SELECT * FROM CHALLENGE c WHERE c.skill = :skill and c.difficulty = :difficulty ORDER BY random() LIMIT 15",
+      nativeQuery = true)
+  Set<Challenge> findBySkill(@Param("skill") String skill, @Param("difficulty") String difficulty);
+
+  /**
+   * Finds the challenges based on skill.
+   *
+   * @param skill the {@link String} skill.
+   * @return the List of {@link Challenge}.
+   */
+  @Query(value = "SELECT COUNT(*) FROM CHALLENGE c WHERE c.skill = :skill", nativeQuery = true)
+  Integer countBySkill(@Param("skill") String skill);
 }

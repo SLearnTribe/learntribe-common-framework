@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserAstReltnRepository extends PagingAndSortingRepository<UserAstReltn, Long> {
 
+  String KEYCLOAK_ID = "keyCloakId";
+
   /**
    * Finds the Assessments mapped to user based on user profile id.
    *
@@ -20,9 +22,9 @@ public interface UserAstReltnRepository extends PagingAndSortingRepository<UserA
    * @return the List of {@link Assessment}
    */
   @Query(
-      value = "SELECT * FROM usr_ast_reltn ua WHERE ua.user_id = :keyCloakId",
+      value = "SELECT * FROM usr_ast_reltn ua WHERE ua.user_id = :" + KEYCLOAK_ID,
       nativeQuery = true)
-  List<UserAstReltn> findByUserId(@Param("keyCloakId") String keyCloakId);
+  List<UserAstReltn> findByUserId(@Param(KEYCLOAK_ID) String keyCloakId);
 
   /**
    * Finds the Assessments mapped to user based on user profile id and status filters. Performs
@@ -35,12 +37,12 @@ public interface UserAstReltnRepository extends PagingAndSortingRepository<UserA
    */
   @Query(
       value =
-          "SELECT * FROM usr_ast_reltn ua WHERE ua.user_id = :keyCloakId and status in :filters",
+          "SELECT * FROM usr_ast_reltn ua WHERE ua.user_id = :"
+              + KEYCLOAK_ID
+              + " and status in :filters",
       nativeQuery = true)
   List<UserAstReltn> findByUserIdAndFilter(
-      @Param("keyCloakId") String keyCloakId,
-      @Param("filters") String[] filters,
-      Pageable pageable);
+      @Param(KEYCLOAK_ID) String keyCloakId, @Param("filters") String[] filters, Pageable pageable);
 
   /**
    * Finds the Assessments mapped to user based on user profile id and status filters.
@@ -51,10 +53,12 @@ public interface UserAstReltnRepository extends PagingAndSortingRepository<UserA
    */
   @Query(
       value =
-          "SELECT * FROM usr_ast_reltn ua WHERE ua.user_id = :keyCloakId and status in :filters",
+          "SELECT * FROM usr_ast_reltn ua WHERE ua.user_id = :"
+              + KEYCLOAK_ID
+              + " and status in :filters",
       nativeQuery = true)
   List<UserAstReltn> findByUserIdAndFilter(
-      @Param("keyCloakId") String keyCloakId, @Param("filters") String[] filters);
+      @Param(KEYCLOAK_ID) String keyCloakId, @Param("filters") String[] filters);
 
   /**
    * Finds the total Assessments mapped to user based on user profile id and status filters.
@@ -65,10 +69,12 @@ public interface UserAstReltnRepository extends PagingAndSortingRepository<UserA
    */
   @Query(
       value =
-          "SELECT COUNT(*) FROM usr_ast_reltn ua WHERE ua.user_id = :userId and status in :filters",
+          "SELECT COUNT(*) FROM usr_ast_reltn ua WHERE ua.user_id = :"
+              + KEYCLOAK_ID
+              + " and status in :filters",
       nativeQuery = true)
   Long countByUserIdAndFilter(
-      @Param("userId") String keyCloakId, @Param("filters") String[] filters);
+      @Param(KEYCLOAK_ID) String keyCloakId, @Param("filters") String[] filters);
 
   /**
    * Finds Assessments based on the assessmnet id and user ids.
@@ -83,6 +89,20 @@ public interface UserAstReltnRepository extends PagingAndSortingRepository<UserA
       nativeQuery = true)
   List<UserAstReltn> findAllByUserAstReltn(
       @Param("userId") String[] keyCloakId, @Param("assessmentId") Long assessmentId);
+
+  /**
+   * Finds Assessments based on the assessmnet id and keycloak id.
+   *
+   * @param keyCloakId the IAM id
+   * @param assessmentId the assessment id
+   * @return the List of {@link UserAstReltn}
+   */
+  @Query(
+      value =
+          "SELECT * FROM usr_ast_reltn ua WHERE ua.user_id = :userId and ua.assessment_id = :assessmentId",
+      nativeQuery = true)
+  UserAstReltn findByUserAstReltn(
+      @Param("userId") String keyCloakId, @Param("assessmentId") Long assessmentId);
 
   /**
    * Finds Assessments based on the related assessment titles and user id.
