@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 public class Violation {
-
-  private String fieldName;
+  private String field;
   private String message;
 }

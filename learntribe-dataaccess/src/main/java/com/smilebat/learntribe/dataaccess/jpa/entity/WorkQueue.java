@@ -1,8 +1,7 @@
 package com.smilebat.learntribe.dataaccess.jpa.entity;
 
 import com.smilebat.learntribe.enums.AssessmentDifficulty;
-import com.smilebat.learntribe.enums.AssessmentStatus;
-import com.smilebat.learntribe.enums.AssessmentType;
+import com.smilebat.learntribe.enums.QueueStatus;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,49 +13,34 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.TermVector;
 
 /**
- * Assessment Entity representation of DB.
+ * User Profile representation of DB.
  *
- * <p>Copyright &copy; 2022 Smile .Bat
+ * <p>Copyright &copy; 2023 Smile .Bat
  *
  * @author Pai,Sai Nandan
  */
-@Table(name = "ASSESSMENT")
-@Entity
 @Getter
 @Setter
+@Table(name = "WORK_QUEUE")
+@Entity
 @SuppressFBWarnings(justification = "Generated code")
-public class Assessment {
-  public static final String ASSESSMENT_NAME = "assessmentInfo";
-
+public class WorkQueue {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", nullable = false)
   private Long id;
 
-  private String subTitle;
+  private String skills;
 
-  @Enumerated(EnumType.STRING)
-  private AssessmentType type;
-
-  private float progress;
-  private long questions;
-
-  @Field(termVector = TermVector.YES)
-  @Enumerated(EnumType.STRING)
-  private AssessmentStatus status;
-
-  @Enumerated(EnumType.STRING)
-  private AssessmentDifficulty difficulty;
-
-  private String description;
-
-  private String title;
+  private String createdFor;
 
   private String createdBy;
 
-  private Long relatedJobId;
+  @Enumerated(EnumType.STRING)
+  private QueueStatus status;
+
+  @Enumerated(EnumType.STRING)
+  private AssessmentDifficulty difficulty;
 }

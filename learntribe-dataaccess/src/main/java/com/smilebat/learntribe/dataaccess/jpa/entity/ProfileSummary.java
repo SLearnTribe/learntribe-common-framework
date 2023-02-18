@@ -8,8 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Defines the Profile Summary Table.
@@ -21,7 +21,7 @@ import lombok.Getter;
 @Table(name = "PROFILE_SUMMARY")
 @Entity
 @Getter
-@Builder
+@Setter
 @SuppressFBWarnings(justification = "Generated code")
 public class ProfileSummary {
   public static final String PROFILE_SUMMARY = "profileSummary";

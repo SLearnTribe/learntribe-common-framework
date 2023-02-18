@@ -36,6 +36,7 @@ public class ErrorHandlingControllerAdvice {
           .getViolations()
           .add(new Violation(violation.getPropertyPath().toString(), violation.getMessage()));
     }
+    error.setStatus(HttpStatus.BAD_REQUEST.value());
     return error;
   }
 
@@ -55,6 +56,34 @@ public class ErrorHandlingControllerAdvice {
           .getViolations()
           .add(new Violation(fieldError.getField(), fieldError.getDefaultMessage()));
     }
+    error.setStatus(HttpStatus.BAD_REQUEST.value());
     return error;
+  }
+
+  /**
+   * Exception handler
+   *
+   * @param ex the {@link BeanValidationException}
+   * @return the {@link DataViolation}
+   */
+  @ExceptionHandler(BeanValidationException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public DataViolation onBeanValidationException(BeanValidationException ex) {
+    return new DataViolation(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+  }
+
+  /**
+   * Exception handler
+   *
+   * @param ex the {@link InvalidDataException}
+   * @return the {@link DataViolation}
+   */
+  @ExceptionHandler(InvalidDataException.class)
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+  @ResponseBody
+  public DataViolation onBeanValidationException(InvalidDataException ex) {
+    return new DataViolation(
+        HttpStatus.UNPROCESSABLE_ENTITY.value(), ex.getField(), ex.getMessage());
   }
 }

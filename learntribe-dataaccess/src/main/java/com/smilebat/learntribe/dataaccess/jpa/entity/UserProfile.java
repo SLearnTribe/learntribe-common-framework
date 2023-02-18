@@ -37,6 +37,7 @@ import org.hibernate.search.annotations.TokenizerDef;
  * <p>Copyright &copy; 2022 Smile .Bat
  *
  * @author Sanjay
+ * @author Pai,Sai Nandan
  */
 @Table(name = "USER_PROFILE")
 @Entity
@@ -89,20 +90,20 @@ public class UserProfile {
 
   private Long phone;
 
-  @OneToMany(mappedBy = USER_DETAILS_NAME, cascade = CascadeType.MERGE)
+  @OneToMany(mappedBy = USER_DETAILS_NAME, cascade = CascadeType.ALL)
   @JsonIgnoreProperties(
       value = {USER_DETAILS_NAME},
       allowSetters = true)
   private Set<WorkExperience> workExperiences = new TreeSet<>(WorkExperience.Comparators.END_DATE);
 
-  @OneToMany(mappedBy = USER_DETAILS_NAME, cascade = CascadeType.MERGE)
+  @OneToMany(mappedBy = USER_DETAILS_NAME, cascade = CascadeType.ALL)
   @JsonIgnoreProperties(
       value = {USER_DETAILS_NAME},
       allowSetters = true)
   private Set<EducationExperience> educationExperiences =
       new TreeSet<>(EducationExperience.Comparators.END_DATE);
 
-  @OneToMany(mappedBy = USER_DETAILS_NAME, cascade = CascadeType.MERGE)
+  @OneToMany(mappedBy = USER_DETAILS_NAME, cascade = CascadeType.ALL)
   @JsonIgnoreProperties(
       value = {USER_DETAILS_NAME},
       allowSetters = true)
