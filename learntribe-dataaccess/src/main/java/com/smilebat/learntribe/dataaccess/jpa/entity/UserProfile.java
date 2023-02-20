@@ -43,6 +43,7 @@ import org.hibernate.search.annotations.TokenizerDef;
 @Entity
 @Indexed
 @SuppressFBWarnings(justification = "Generated code")
+@SuppressWarnings("PMD.TooManyFields")
 @Getter
 @Setter
 @AnalyzerDef(
@@ -89,6 +90,12 @@ public class UserProfile {
   private String about;
 
   private Long phone;
+
+  private Long currentCtc;
+
+  private Long expectedCtc;
+
+  private Long noticePeriod;
 
   @OneToMany(mappedBy = USER_DETAILS_NAME, cascade = CascadeType.ALL)
   @JsonIgnoreProperties(
