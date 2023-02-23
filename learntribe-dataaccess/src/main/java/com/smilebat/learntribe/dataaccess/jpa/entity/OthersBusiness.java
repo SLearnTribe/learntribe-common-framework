@@ -47,7 +47,10 @@ public class OthersBusiness {
   @Lob private String qualificationRequired;
 
   @Lob private String requiredSkills;
+
   private Long experienceRequired;
+
+  private Long salaryBudget;
 
   private String createdBy;
 
