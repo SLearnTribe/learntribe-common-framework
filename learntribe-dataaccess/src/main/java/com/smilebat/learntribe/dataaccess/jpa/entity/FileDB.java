@@ -32,6 +32,8 @@ public class FileDB {
 
   private String keycloakId;
 
+  private String email;
+
   private Long size;
 
   @Lob private byte[] data;
