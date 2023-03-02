@@ -2,6 +2,7 @@ package com.smilebat.learntribe.dataaccess.jpa.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.smilebat.learntribe.enums.Gender;
+import com.smilebat.learntribe.enums.InterviewStatus;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Set;
 import java.util.TreeSet;
@@ -96,6 +97,9 @@ public class UserProfile {
   private Long expectedCtc;
 
   private Long noticePeriod;
+
+  @Enumerated(EnumType.STRING)
+  private InterviewStatus availableForInterview;
 
   @OneToMany(mappedBy = USER_DETAILS_NAME, cascade = CascadeType.ALL)
   @JsonIgnoreProperties(
