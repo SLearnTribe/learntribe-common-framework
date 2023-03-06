@@ -3,14 +3,15 @@ package com.smilebat.learntribe.dataaccess;
 import com.smilebat.learntribe.dataaccess.jpa.entity.Assessment;
 import com.smilebat.learntribe.dataaccess.jpa.entity.UserObReltn;
 import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /** Returns Data Access by Jobs Repo */
 @Repository
-public interface UserObReltnRepository extends JpaRepository<UserObReltn, Long> {
+public interface UserObReltnRepository extends PagingAndSortingRepository<UserObReltn, Long> {
 
   /**
    * Finds the Jobs mapped to user based on user profile id.
@@ -20,6 +21,16 @@ public interface UserObReltnRepository extends JpaRepository<UserObReltn, Long> 
    */
   @Query(value = "SELECT * FROM usr_ob_reltn uob WHERE uob.user_id = :userId", nativeQuery = true)
   List<UserObReltn> findByUserId(@Param("userId") String keyCloakId);
+
+  /**
+   * Finds the Jobs mapped to user based on user profile id with pagination.
+   *
+   * @param keyCloakId the profile id.
+   * @param pageable the pagination.
+   * @return the List of {@link Assessment}
+   */
+  @Query(value = "SELECT * FROM usr_ob_reltn uob WHERE uob.user_id = :userId", nativeQuery = true)
+  List<UserObReltn> findByUserId(@Param("userId") String keyCloakId, Pageable pageable);
 
   /**
    * Finds the user related job id.
