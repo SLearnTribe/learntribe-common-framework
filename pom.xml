@@ -18,6 +18,11 @@
     <name>${project.artifactId}</name>
     <properties>
         <model.version>1.1.11-SNAPSHOT</model.version>
+    <version>1.1.8-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <properties>
+        <model.version>1.1.10-SNAPSHOT</model.version>
     </properties>
 	
     <dependencyManagement>
