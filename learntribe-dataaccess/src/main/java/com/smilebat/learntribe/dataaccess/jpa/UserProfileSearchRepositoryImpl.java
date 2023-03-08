@@ -5,10 +5,9 @@ import com.smilebat.learntribe.dataaccess.jpa.entity.UserProfile;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.FullTextQuery;
-import org.hibernate.search.jpa.Search;
-import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.search.mapper.orm.Search;
+import org.hibernate.search.mapper.orm.massindexing.MassIndexer;
+import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -22,34 +21,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserProfileSearchRepositoryImpl implements UserProfileSearchRepository {
 
-  @PersistenceContext private EntityManager em;
+  @PersistenceContext private EntityManager entityManager;
 
   @Override
   public List<UserProfile> search(String keyword, Pageable pageable) throws InterruptedException {
-    FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(em);
-    fullTextEntityManager.createIndexer().startAndWait();
+    SearchSession searchSession = Search.session(entityManager);
+    MassIndexer indexer = searchSession.massIndexer(UserProfile.class).threadsToLoadObjects(5);
+    indexer.startAndWait();
 
-    QueryBuilder queryBuilder =
-        fullTextEntityManager
-            .getSearchFactory()
-            .buildQueryBuilder()
-            .forEntity(UserProfile.class)
-            .get();
-    org.apache.lucene.search.Query luceneQuery =
-        queryBuilder
-            .keyword()
-            .onFields("skills", "about", "country")
-            .matching(keyword)
-            .createQuery();
-
-    // wrap Lucene query in a javax.persistence.Query
-    FullTextQuery jpaQuery =
-        fullTextEntityManager.createFullTextQuery(luceneQuery, UserProfile.class);
-
-    jpaQuery.setMaxResults(pageable.getPageSize());
-    jpaQuery.setFirstResult(pageable.getPageNumber());
-
-    // execute search
-    return jpaQuery.getResultList();
+    return searchSession
+        .search(UserProfile.class)
+        .where(
+            f ->
+                f.bool()
+                    .should(
+                        f.match()
+                            .fields("skills", "country", "currentDesignation")
+                            .matching(keyword)))
+        .fetchHits(pageable.getPageNumber(), pageable.getPageSize());
   }
 }

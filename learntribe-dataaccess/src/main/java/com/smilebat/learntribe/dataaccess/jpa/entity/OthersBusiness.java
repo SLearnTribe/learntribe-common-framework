@@ -16,8 +16,6 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.TermVector;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -41,9 +39,7 @@ public class OthersBusiness {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @Field(termVector = TermVector.YES)
-  @Lob
-  private String title;
+  @Lob private String title;
 
   @Lob private String description;
 

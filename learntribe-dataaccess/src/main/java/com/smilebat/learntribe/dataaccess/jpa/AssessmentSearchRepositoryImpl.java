@@ -2,18 +2,12 @@ package com.smilebat.learntribe.dataaccess.jpa;
 
 import com.smilebat.learntribe.dataaccess.AssessmentSearchRepository;
 import com.smilebat.learntribe.dataaccess.jpa.entity.UserAstReltn;
-import com.smilebat.learntribe.enums.AssessmentStatus;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.apache.lucene.search.Query;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.FullTextQuery;
-import org.hibernate.search.jpa.Search;
-import org.hibernate.search.query.DatabaseRetrievalMethod;
-import org.hibernate.search.query.ObjectLookupMethod;
-import org.hibernate.search.query.dsl.MustJunction;
-import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.search.mapper.orm.Search;
+import org.hibernate.search.mapper.orm.massindexing.MassIndexer;
+import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -27,44 +21,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class AssessmentSearchRepositoryImpl implements AssessmentSearchRepository {
 
-  @PersistenceContext private EntityManager em;
+  @PersistenceContext private EntityManager entityManager;
 
   @Override
   public List<UserAstReltn> search(
       String keyword, String[] filters, String keyCloakId, Pageable pageable)
       throws InterruptedException {
-    FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(em);
-    fullTextEntityManager.createIndexer().startAndWait();
-    QueryBuilder queryBuilder =
-        fullTextEntityManager
-            .getSearchFactory()
-            .buildQueryBuilder()
-            .forEntity(UserAstReltn.class)
-            .get();
+    SearchSession searchSession = Search.session(entityManager);
+    MassIndexer indexer = searchSession.massIndexer(UserAstReltn.class).threadsToLoadObjects(5);
+    indexer.startAndWait();
 
-    Query keywordQuery =
-        queryBuilder.keyword().onFields("assessmentTitle").matching(keyword).createQuery();
-    Query userIdQuery = queryBuilder.keyword().onField("userId").matching(keyCloakId).createQuery();
-    MustJunction intermediateCriteria = queryBuilder.bool().must(keywordQuery).must(userIdQuery);
-    if (filters.length == 1) {
-      intermediateCriteria.must(
-          queryBuilder
-              .keyword()
-              .onField("status")
-              .matching(AssessmentStatus.valueOf(filters[0]))
-              .createQuery());
-    }
-    Query finalQuery = intermediateCriteria.createQuery();
-
-    // wrap Lucene query in a javax.persistence.Query
-    FullTextQuery jpaQuery =
-        fullTextEntityManager.createFullTextQuery(finalQuery, UserAstReltn.class);
-    jpaQuery.initializeObjectsWith(
-        ObjectLookupMethod.SECOND_LEVEL_CACHE, DatabaseRetrievalMethod.QUERY);
-    jpaQuery.setMaxResults(pageable.getPageSize());
-    jpaQuery.setFirstResult(pageable.getPageNumber());
-
-    // execute search
-    return jpaQuery.getResultList();
+    return searchSession
+        .search(UserAstReltn.class)
+        .where(
+            f ->
+                f.bool()
+                    .must(f.bool().should(f.match().fields("assessmentTitle").matching(keyword)))
+                    .must(f.match().field("userId").matching(keyCloakId)))
+        .fetchHits(pageable.getPageNumber(), pageable.getPageSize());
   }
 }

@@ -14,18 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
-import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
-import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.AnalyzerDef;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Parameter;
-import org.hibernate.search.annotations.Store;
-import org.hibernate.search.annotations.TermVector;
-import org.hibernate.search.annotations.TokenFilterDef;
-import org.hibernate.search.annotations.TokenizerDef;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 /**
  * Defines the relationship between User and Assessment Entity in DB.
@@ -40,15 +30,6 @@ import org.hibernate.search.annotations.TokenizerDef;
 @Entity
 @Indexed
 @SuppressFBWarnings(justification = "Generated code")
-@AnalyzerDef(
-    name = "textanalyzer2",
-    tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
-    filters = {
-      @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-      @TokenFilterDef(
-          factory = SnowballPorterFilterFactory.class,
-          params = {@Parameter(name = "language", value = "English")})
-    })
 public class UserAstReltn {
 
   @Id
@@ -56,25 +37,17 @@ public class UserAstReltn {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @Field(termVector = TermVector.YES)
   private String userId;
 
   private Long assessmentId;
 
-  @Field(
-      termVector = TermVector.YES,
-      store = Store.NO,
-      analyzer = @Analyzer(definition = "textanalyzer2"))
+  @FullTextField(analyzer = "wordsearch")
   private String assessmentTitle;
 
   private Integer questions;
 
   private Integer answered;
 
-  @Field(
-      termVector = TermVector.YES,
-      store = Store.NO,
-      analyzer = @Analyzer(definition = "textanalyzer2"))
   @Enumerated(EnumType.STRING)
   private AssessmentStatus status;
 

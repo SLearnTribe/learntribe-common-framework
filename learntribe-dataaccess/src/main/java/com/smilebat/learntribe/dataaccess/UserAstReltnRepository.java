@@ -77,6 +77,20 @@ public interface UserAstReltnRepository extends PagingAndSortingRepository<UserA
       @Param(KEYCLOAK_ID) String keyCloakId, @Param("filters") String[] filters);
 
   /**
+   * Finds Assessments based on the assessmnet ids and user id.
+   *
+   * @param keyCloakId the IAM id
+   * @param assessmentIds the list of assessment id
+   * @return the List of {@link UserAstReltn}
+   */
+  @Query(
+      value =
+          "SELECT * FROM usr_ast_reltn ua WHERE ua.user_id = :keyCloakId and ua.assessment_id in :assessmentIds",
+      nativeQuery = true)
+  List<UserAstReltn> findAllByUserAstReltn(
+      @Param("keyCloakId") String keyCloakId, @Param("assessmentIds") List<Long> assessmentIds);
+
+  /**
    * Finds Assessments based on the assessmnet id and user ids.
    *
    * @param keyCloakId the IAM id

@@ -15,11 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
-import org.hibernate.search.annotations.TermVector;
 
 /**
  * Defines the Resume table.
@@ -30,7 +25,6 @@ import org.hibernate.search.annotations.TermVector;
  */
 @Table(name = "RESUME")
 @Entity
-@Indexed
 @Getter
 @Setter
 @SuppressFBWarnings(justification = "Generated code")
@@ -49,22 +43,15 @@ public class Resume {
   private String email;
   private String currentDesignation;
 
-  @Field(termVector = TermVector.YES)
   private String country;
 
   private String city;
 
   private String linkedIn;
 
-  @Field(
-      termVector = TermVector.YES,
-      store = Store.NO,
-      analyzer = @Analyzer(definition = "textanalyzer"))
   private String skills;
 
-  @Field(termVector = TermVector.YES)
-  @Lob
-  private String about;
+  @Lob private String about;
 
   @Lob private String address;
 
