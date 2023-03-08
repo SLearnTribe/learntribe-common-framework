@@ -14,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.TermVector;
 
 /**
  * Assessment Entity representation of DB.
@@ -45,7 +43,6 @@ public class Assessment {
   private float progress;
   private long questions;
 
-  @Field(termVector = TermVector.YES)
   @Enumerated(EnumType.STRING)
   private AssessmentStatus status;
 
