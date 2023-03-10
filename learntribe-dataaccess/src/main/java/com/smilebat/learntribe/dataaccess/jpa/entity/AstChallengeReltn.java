@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.search.annotations.Indexed;
 
 /**
  * Represents a relation between Assessment and Challenges. Many to Many
@@ -22,7 +21,6 @@ import org.hibernate.search.annotations.Indexed;
 @Setter
 @Table(name = "AST_CHLNG_RELTN")
 @Entity
-@Indexed
 @SuppressFBWarnings(justification = "Generated code")
 public class AstChallengeReltn {
 

@@ -19,18 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
-import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
-import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.AnalyzerDef;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Parameter;
-import org.hibernate.search.annotations.Store;
-import org.hibernate.search.annotations.TermVector;
-import org.hibernate.search.annotations.TokenFilterDef;
-import org.hibernate.search.annotations.TokenizerDef;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 /**
  * User Profile representation of DB.
@@ -47,15 +37,6 @@ import org.hibernate.search.annotations.TokenizerDef;
 @SuppressWarnings("PMD.TooManyFields")
 @Getter
 @Setter
-@AnalyzerDef(
-    name = "textanalyzer",
-    tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
-    filters = {
-      @TokenFilterDef(factory = LowerCaseFilterFactory.class),
-      @TokenFilterDef(
-          factory = SnowballPorterFilterFactory.class,
-          params = {@Parameter(name = "language", value = "English")})
-    })
 public class UserProfile {
 
   public static final String USER_DETAILS_NAME = "userProfile";
@@ -69,26 +50,23 @@ public class UserProfile {
 
   private String name;
   private String email;
+
+  @FullTextField(analyzer = "wordsearch")
   private String currentDesignation;
 
   @Enumerated(EnumType.STRING)
   private Gender gender;
 
-  @Field(termVector = TermVector.YES)
+  @FullTextField(analyzer = "wordsearch")
   private String country;
 
   private String linkedIn;
   private String gitHub;
 
-  @Field(
-      termVector = TermVector.YES,
-      store = Store.NO,
-      analyzer = @Analyzer(definition = "textanalyzer"))
+  @FullTextField(analyzer = "wordsearch")
   private String skills;
 
-  @Field(termVector = TermVector.YES)
-  @Lob
-  private String about;
+  @Lob private String about;
 
   private Long phone;
 

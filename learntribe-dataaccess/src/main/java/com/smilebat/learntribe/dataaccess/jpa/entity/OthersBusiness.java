@@ -40,6 +40,7 @@ public class OthersBusiness {
   private Long id;
 
   @Lob private String title;
+
   @Lob private String description;
 
   @Lob private String rolesAndResponsibilities;

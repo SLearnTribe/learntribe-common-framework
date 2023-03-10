@@ -43,4 +43,6 @@ public class WorkQueue {
 
   @Enumerated(EnumType.STRING)
   private AssessmentDifficulty difficulty;
+
+  private Long relatedJobId;
 }

@@ -1,7 +1,7 @@
 package com.smilebat.learntribe.dataaccess.jpa;
 
-import com.smilebat.learntribe.dataaccess.AssessmentSearchRepository;
-import com.smilebat.learntribe.dataaccess.jpa.entity.UserAstReltn;
+import com.smilebat.learntribe.dataaccess.JobsSearchRepository;
+import com.smilebat.learntribe.dataaccess.jpa.entity.UserObReltn;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,31 +12,34 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
- * Implementation for {@link AssessmentSearchRepository}
+ * Implementation for {@link JobsSearchRepository}
  *
- * <p>Copyright &copy; 2022 Smile .Bat
+ * <p>Copyright &copy; 2023 Smile .Bat
  *
  * @author Pai,Sai Nandan
  */
 @Service
-public class AssessmentSearchRepositoryImpl implements AssessmentSearchRepository {
-
+public class JobSearchRepositoryImpl implements JobsSearchRepository {
   @PersistenceContext private EntityManager entityManager;
 
   @Override
-  public List<UserAstReltn> search(
-      String keyword, String[] filters, String keyCloakId, Pageable pageable)
+  public List<UserObReltn> search(String keyword, String keyCloakId, Pageable pageable)
       throws InterruptedException {
     SearchSession searchSession = Search.session(entityManager);
-    MassIndexer indexer = searchSession.massIndexer(UserAstReltn.class).threadsToLoadObjects(5);
+    MassIndexer indexer = searchSession.massIndexer(UserObReltn.class).threadsToLoadObjects(5);
     indexer.startAndWait();
 
     return searchSession
-        .search(UserAstReltn.class)
+        .search(UserObReltn.class)
         .where(
             f ->
                 f.bool()
-                    .must(f.bool().should(f.match().fields("assessmentTitle").matching(keyword)))
+                    .must(
+                        f.bool()
+                            .should(
+                                f.match()
+                                    .fields("title", "location", "businessName", "requiredSkills")
+                                    .matching(keyword)))
                     .must(f.match().field("userId").matching(keyCloakId)))
         .fetchHits(pageable.getPageNumber(), pageable.getPageSize());
   }
