@@ -42,6 +42,15 @@ public interface UserProfileRepository extends PagingAndSortingRepository<UserPr
   List<UserProfile> findAllByEmail(@Param("emails") String[] emails);
 
   /**
+   * Finds the profile based on user email ids.
+   *
+   * @param email the IAM user emails.
+   * @return the {@link UserProfile}
+   */
+  @Query(value = "SELECT * FROM USER_PROFILE a WHERE a.email in :email", nativeQuery = true)
+  List<UserProfile> listByEmail(@Param("emails") String email);
+
+  /**
    * Finds all valid user profiles
    *
    * @param pageable pageable object for pagination
