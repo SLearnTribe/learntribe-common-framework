@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
 /**
  * Defines the relationship between User and Assessment Entity in DB.
@@ -37,7 +38,7 @@ public class UserAstReltn {
   @Column(name = "id", nullable = false)
   private Long id;
 
-  private String userId;
+  @KeywordField private String userId;
 
   private Long assessmentId;
 
