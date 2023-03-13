@@ -17,7 +17,6 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
@@ -44,7 +43,7 @@ public class UserObReltn {
   @KeywordField private String userId;
 
   @Enumerated(EnumType.STRING)
-  @GenericField
+  // @GenericField(valueBridge = @ValueBridgeRef (name = EnumToStringValueBridge.class))
   private HiringStatus hiringStatus;
 
   @Enumerated(EnumType.STRING)

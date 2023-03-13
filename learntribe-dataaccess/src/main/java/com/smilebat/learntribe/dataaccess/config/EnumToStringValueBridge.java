@@ -10,7 +10,7 @@ import org.hibernate.search.mapper.pojo.bridge.runtime.ValueBridgeToIndexedValue
  *
  * <p>Copyright &copy; 2023 Smile .Bat
  *
- * @author Pai,Sai Nandan
+ * @author Chat GPT.
  */
 @ToString
 public class EnumToStringValueBridge implements ValueBridge<Enum, String> {
