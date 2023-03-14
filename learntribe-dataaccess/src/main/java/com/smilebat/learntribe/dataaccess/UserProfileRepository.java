@@ -48,7 +48,7 @@ public interface UserProfileRepository extends PagingAndSortingRepository<UserPr
    * @return the {@link UserProfile}
    */
   @Query(value = "SELECT * FROM USER_PROFILE a WHERE a.email in :email", nativeQuery = true)
-  List<UserProfile> listByEmail(@Param("emails") String email);
+  List<UserProfile> listByEmail(@Param("email") String email);
 
   /**
    * Finds all valid user profiles
