@@ -41,6 +41,7 @@ public class WorkExperience implements Experience, Comparable<WorkExperience> {
   private Integer years;
   protected Instant startDate;
   protected Instant endDate;
+  private Boolean currentlyWorkingHere = false;
 
   @ManyToOne(optional = false)
   @NotNull

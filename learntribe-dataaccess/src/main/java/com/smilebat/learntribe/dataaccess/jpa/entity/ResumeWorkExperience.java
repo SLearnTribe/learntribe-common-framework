@@ -42,6 +42,7 @@ public class ResumeWorkExperience implements Experience, Comparable<ResumeWorkEx
   private Integer years;
   protected Instant startDate;
   protected Instant endDate;
+  private Boolean currentlyWorkingHere = false;
 
   @Lob private String description;
 
